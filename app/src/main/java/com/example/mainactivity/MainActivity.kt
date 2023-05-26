@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         deckAdapter = DeckAdapter(emptyList())
         rvDecks.adapter = deckAdapter
 
-        val db = Firebase.firestore
+        val db = DatabaseManager.getDatabase()
 
         val startingDeck: MutableList<Deck> = mutableListOf()
 
