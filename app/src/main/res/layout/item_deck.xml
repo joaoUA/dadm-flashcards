@@ -7,7 +7,7 @@
     android:paddingHorizontal="10dp">
 
     <TextView
-        android:id="@+id/tvItemDeckName"
+        android:id="@+id/tv_ItemDeckName"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minHeight="50dp"
@@ -19,25 +19,25 @@
         android:background="#4477ff"
         />
     <LinearLayout
-        android:id="@+id/llItemDeckActions"
+        android:id="@+id/ll_ItemDeckActions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemDeckName"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ItemDeckName"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"
         android:background="@color/black"
         android:visibility="gone"
         >
         <Button
-            android:id="@+id/btnEditItemDeck"
+            android:id="@+id/btn_EditItemDeck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/editDeck"
             android:layout_marginHorizontal="5dp"/>
         <Button
-            android:id="@+id/btnStudyItemDeck"
+            android:id="@+id/btn_StudyItemDeck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/studyDeck"

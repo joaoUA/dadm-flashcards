@@ -1,5 +1,6 @@
 package com.example.mainactivity
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +18,10 @@ class DeckAdapter (private var decks: List<Deck>) :
     }
 
     class DeckViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val itemDeckName: TextView = itemView.findViewById(R.id.tvItemDeckName)
-        val itemDeckBtnsLayout: LinearLayout = itemView.findViewById(R.id.llItemDeckActions)
-        val itemDeckEditBtn: Button = itemView.findViewById(R.id.btnEditItemDeck)
-        val itemDeckStudyBtn: Button = itemView.findViewById(R.id.btnStudyItemDeck)
+        val itemDeckName: TextView = itemView.findViewById(R.id.tv_ItemDeckName)
+        val itemDeckBtnsLayout: LinearLayout = itemView.findViewById(R.id.ll_ItemDeckActions)
+        val itemDeckEditBtn: Button = itemView.findViewById(R.id.btn_EditItemDeck)
+        val itemDeckStudyBtn: Button = itemView.findViewById(R.id.btn_StudyItemDeck)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeckViewHolder {
@@ -42,7 +43,9 @@ class DeckAdapter (private var decks: List<Deck>) :
         }
 
         holder.itemDeckEditBtn.setOnClickListener {
-            //on click 'edit deck'
+            val intent = Intent(holder.itemView.context, InspectDeckActivity::class.java)
+            intent.putExtra("DECK_NAME", deck.name)
+            holder.itemView.context.startActivity(intent)
         }
 
         holder.itemDeckStudyBtn.setOnClickListener {

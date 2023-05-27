@@ -2,4 +2,9 @@
     <string name="app_name">MainActivity</string>
     <string name="editDeck">Edit</string>
     <string name="studyDeck">Study</string>
+    <string name="deleteDeck">Delete</string>
+    <string name="addCardToDeck">Add</string>
+    <string name="itemCardDefaultText">Card Text Template</string>
+    <string name="editItemCard">E</string>
+    <string name="removeItemCard">R</string>
 </resources>

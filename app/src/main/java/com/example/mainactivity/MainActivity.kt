@@ -33,25 +33,7 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 for(document in result) {
                     println("Baralho Nome: ${document.id}");
-
                     startingDeck.add(Deck(document.id))
-
-                    val cartas = document.data["cartas"] as? List<DocumentReference>
-                    cartas?.forEach { cartaRef ->
-                        cartaRef.get()
-                            .addOnSuccessListener { cartaSnapshot ->
-                                if(cartaSnapshot.exists()) {
-                                    val cartaData = cartaSnapshot.data
-                                    val cartaFrente = cartaData?.get("frente")
-                                    val cartaVerso = cartaData?.get("verso")
-                                } else {
-                                    println("Carta não existe: ${cartaRef}")
-                                }
-                            }
-                            .addOnFailureListener { exception ->
-                                println("Erro a ler carta: ${exception}")
-                            }
-                    }
                 }
 
                 deckAdapter.setDecks(startingDeck)
