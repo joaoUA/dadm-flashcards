@@ -7,4 +7,9 @@
     <string name="itemCardDefaultText">Card Text Template</string>
     <string name="editItemCard">E</string>
     <string name="removeItemCard">R</string>
+    <string name="flashcardImageContentDescription">Flashcard Image</string>
+    <string name="flashcardPlaceholderText">FlashCard Placeholder Text</string>
+    <string name="flashcardWrongBtnText">X</string>
+    <string name="flashcardFlipBtnText">Flip</string>
+    <string name="flashcardCorrectBtnText">V</string>
 </resources>

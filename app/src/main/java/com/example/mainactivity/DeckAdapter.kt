@@ -49,7 +49,9 @@ class DeckAdapter (private var decks: List<Deck>) :
         }
 
         holder.itemDeckStudyBtn.setOnClickListener {
-            //on click 'study deck'
+            val intent = Intent(holder.itemView.context, StudyDeckActivity::class.java)
+            intent.putExtra("DECK_NAME", deck.name)
+            holder.itemView.context.startActivity(intent)
         }
     }
 
