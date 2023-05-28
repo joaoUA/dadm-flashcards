@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MainActivity</string>
+    <string name="app_name">Flashcards</string>
     <string name="editDeck">Edit</string>
     <string name="studyDeck">Study</string>
     <string name="deleteDeck">Delete</string>
@@ -12,4 +12,10 @@
     <string name="flashcardWrongBtnText">X</string>
     <string name="flashcardFlipBtnText">Flip</string>
     <string name="flashcardCorrectBtnText">V</string>
+    <string name="inspectCardFrontLabel">Frente:</string>
+    <string name="inspectCardBackLabel">Verso</string>
+    <string name="inspectCardImageContentDescription">FLashcard Image</string>
+    <string name="confirmInspectCardBtn">Confirm</string>
+    <string name="removeInspectCardBtn">Remove</string>
+    <string name="cancelInspectCardBtn">Cancel</string>
 </resources>

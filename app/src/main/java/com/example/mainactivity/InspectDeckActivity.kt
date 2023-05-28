@@ -49,7 +49,12 @@ class InspectDeckActivity : AppCompatActivity() {
                                 val cardData = referencedDocument.data
                                 totalCards++
                                 if(cardData != null) {
-                                    val card = Card(cardData["frente"]!! as String, cardData["verso"]!! as String )
+                                    val card = Card(
+                                        id=referencedDocument.id,
+                                        frente=cardData["frente"]!! as String,
+                                        verso=cardData["verso"]!! as String,
+                                        estudada=cardData["estudada"]!! as Boolean
+                                    )
                                     cards.add(card)
                                     if(cards.size == totalCards) {
                                         cardAdapter.setCards(cards)
@@ -62,7 +67,7 @@ class InspectDeckActivity : AppCompatActivity() {
                         .addOnFailureListener { exception ->
                             println("Error getting referenced document: $exception")
                         }
-                    }
                 }
+            }
         }
 }

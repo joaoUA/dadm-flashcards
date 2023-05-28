@@ -81,12 +81,15 @@ class StudyDeckActivity : AppCompatActivity() {
                 val cardDeferreds = cardReferences?.map { reference ->
                     async {
                         val referencedDocument = reference.get().await()
-
                         if(referencedDocument.exists()) {
                             val cardData = referencedDocument.data
                             if(cardData != null) {
-                                val card = Card(cardData["frente"]!! as String, cardData["verso"]!! as String)
-                                Log.d("Coroutine", "Card: ${card.frente}, ${card.verso}");
+                                val card = Card(
+                                    id=referencedDocument.id,
+                                    frente=cardData["frente"]!! as String,
+                                    verso=cardData["verso"]!! as String,
+                                    estudada=cardData["estudada"]!! as Boolean
+                                )
                                 card
                             } else {
                                 null
@@ -117,12 +120,10 @@ class StudyDeckActivity : AppCompatActivity() {
 
     private fun toggleAnswerButtons(show: Boolean) {
         if (show) {
-            Log.d("UI", "Show Answer Buttons")
             btnFlip.visibility = View.GONE
             btnWrong.visibility = View.VISIBLE
             btnCorrect.visibility = View.VISIBLE
         } else {
-            Log.d("UI", "Show Flip Button")
             btnFlip.visibility = View.VISIBLE
             btnWrong.visibility = View.GONE
             btnCorrect.visibility = View.GONE
