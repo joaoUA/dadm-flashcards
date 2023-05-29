@@ -5,7 +5,10 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.tasks.await
+import java.util.*
 
 object DatabaseManager {
 
@@ -14,6 +17,7 @@ object DatabaseManager {
     fun getDatabase(): FirebaseFirestore {
         return databaseInstance
     }
+
 
     suspend fun getCardsFromDeckID(deckName: String): MutableList<Card> {
         val cards: MutableList<Card> = mutableListOf()
@@ -51,6 +55,12 @@ object DatabaseManager {
             Log.w("Firebase", "Error: $e")
         }
         return cards
+    }
+
+    fun generateUniqueName(): String {
+        val timestamp = System.currentTimeMillis()
+        val uniqueId = UUID.randomUUID().toString()
+        return "${timestamp}_$uniqueId"
     }
 
 }
