@@ -18,4 +18,7 @@
     <string name="confirmInspectCardBtn">Confirm</string>
     <string name="removeInspectCardBtn">Remove</string>
     <string name="cancelInspectCardBtn">Cancel</string>
+    <string name="inspectCardRemoveImage">Remove</string>
+    <string name="inspectCardGalleryImage">Gallery</string>
+    <string name="inspectCardCameraImage">Camera</string>
 </resources>

@@ -1,19 +1,24 @@
 package com.example.mainactivity
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.MediaStore.Audio.Media
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Source
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class InspectCardActivity : AppCompatActivity() {
 
@@ -22,18 +27,28 @@ class InspectCardActivity : AppCompatActivity() {
 
     private lateinit var cancelBtn: Button
     private lateinit var confirmBtn: Button
+    private lateinit var addImageBtn: Button
+    private lateinit var addCameraBtn: Button
     private lateinit var cardFrontText: EditText
     private lateinit var cardBackText: EditText
+    private lateinit var cardImage: ImageView
     private lateinit var inspectCardLayout: LinearLayout
+
+    private val PERMISSION_REQUEST_CAMERA = 1
+    private val PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 2
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inspect_card)
 
+        addImageBtn = findViewById(R.id.btn_inspectCardAddImage)
+        addCameraBtn = findViewById(R.id.btn_inspectCardCamera)
         cancelBtn = findViewById(R.id.btn_InspectCardCancel)
         confirmBtn = findViewById(R.id.btn_InspectConfirm)
         cardFrontText = findViewById(R.id.et_inspectCardFrontText)
         cardBackText = findViewById(R.id.et_inspectCardBackText)
+        cardImage = findViewById(R.id.iv_inspectCardImage)
         inspectCardLayout = findViewById(R.id.ll_inspectCard)
 
         inspectCardLayout.visibility = View.GONE
@@ -42,6 +57,21 @@ class InspectCardActivity : AppCompatActivity() {
         if (cardID == null || cardID.isEmpty()) {
             finish()
         }
+
+        val pickImageFromGalleryContract = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                cardImage.setImageURI(uri)
+            }
+        }
+        val takePictureContract =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val imageUri: Uri? = result.data?.data
+                    imageUri?.let {
+                        cardImage.setImageURI(imageUri)
+                    }
+                }
+            }
 
         db = DatabaseManager.getDatabase()
         try {
@@ -72,6 +102,18 @@ class InspectCardActivity : AppCompatActivity() {
             Log.d("Card", "$e")
         }
 
+        addImageBtn.setOnClickListener {
+            pickImageFromGalleryContract.launch("image/*")
+        }
+        addCameraBtn.setOnClickListener {
+            val permissions = arrayOf(android.Manifest.permission.CAMERA)
+            if (checkPermissions(permissions)) {
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                takePictureContract.launch(intent)
+            } else {
+                ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CAMERA)
+            }
+        }
         cancelBtn.setOnClickListener {
             finish()
         }
@@ -107,6 +149,14 @@ class InspectCardActivity : AppCompatActivity() {
             }
         }
 
+    }
 
+    private fun checkPermissions(permissions: Array<String>): Boolean {
+        for (permission in permissions) {
+            if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
     }
 }

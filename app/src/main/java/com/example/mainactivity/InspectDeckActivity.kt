@@ -1,7 +1,11 @@
 package com.example.mainactivity
 
+import android.net.Uri
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +18,9 @@ class InspectDeckActivity : AppCompatActivity() {
     private lateinit var rvCards: RecyclerView
     private lateinit var cardAdapter: CardAdapter
     private lateinit var deckName: String
+
     private lateinit var cards: MutableList<Card>
+    private lateinit var pickImageLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

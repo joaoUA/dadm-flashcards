@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:importantForAutofill="no"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:minHeight="50dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -38,13 +39,45 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:importantForAutofill="no"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:minHeight="50dp"/>
 
         <ImageView
+            android:id="@+id/iv_inspectCardImage"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/inspectCardImageContentDescription" />
+            android:contentDescription="@string/inspectCardImageContentDescription"
+            android:src="@drawable/ic_launcher_background"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:gravity="center_horizontal"
+            >
+            <Button
+                android:id="@+id/btn_inspectCardRemoveImage"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/inspectCardRemoveImage"/>
+            <Button
+                android:id="@+id/btn_inspectCardCamera"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/inspectCardCameraImage"/>
+            <Button
+                android:id="@+id/btn_inspectCardAddImage"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/inspectCardGalleryImage"/>
+        </LinearLayout>
     </LinearLayout>
 
 
