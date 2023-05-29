@@ -1,11 +1,13 @@
 package com.example.mainactivity
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 class CardAdapter(private var cards: List<Card>):
     RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
@@ -36,12 +38,13 @@ class CardAdapter(private var cards: List<Card>):
         holder.itemCardName.text = card.frente
 
         holder.itemCardEditBtn.setOnClickListener {
-            //iniciar activity para editar carta
+            val intent = Intent(holder.itemView.context, InspectCardActivity::class.java)
+            intent.putExtra("CARD_ID", card.id)
+            holder.itemView.context.startActivity(intent)
         }
 
         holder.itemCardRemoveBtn.setOnClickListener {
             //remover carta
         }
     }
-
 }

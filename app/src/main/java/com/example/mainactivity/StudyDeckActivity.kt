@@ -88,7 +88,8 @@ class StudyDeckActivity : AppCompatActivity() {
                                     id=referencedDocument.id,
                                     frente=cardData["frente"]!! as String,
                                     verso=cardData["verso"]!! as String,
-                                    estudada=cardData["estudada"]!! as Boolean
+                                    estudada=cardData["estudada"]!! as Boolean,
+                                    imagem=cardData["imagem"]!! as String
                                 )
                                 card
                             } else {
