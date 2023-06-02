@@ -12,11 +12,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,8 +29,8 @@ class InspectCardActivity : AppCompatActivity() {
 
     private lateinit var cancelBtn: Button
     private lateinit var confirmBtn: Button
-    private lateinit var addImageBtn: Button
-    private lateinit var addCameraBtn: Button
+    private lateinit var addImageBtn: ImageButton
+    private lateinit var addCameraBtn: ImageButton
     private lateinit var cardFrontText: EditText
     private lateinit var cardBackText: EditText
     private lateinit var cardImage: ImageView
