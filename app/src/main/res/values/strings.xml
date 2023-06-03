@@ -21,4 +21,7 @@
     <string name="inspectCardRemoveImage">Remove</string>
     <string name="inspectCardGalleryImage">Gallery</string>
     <string name="inspectCardCameraImage">Camera</string>
+    <string name="decksListTitle">Baralhos:</string>
+    <string name="BtnAddDeck">Add</string>
+    <string name="hintAddNewDeck">Nome do Baralho</string>
 </resources>

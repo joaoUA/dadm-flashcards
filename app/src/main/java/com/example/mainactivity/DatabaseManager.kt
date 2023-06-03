@@ -1,13 +1,12 @@
 package com.example.mainactivity
 
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
@@ -63,4 +62,24 @@ object DatabaseManager {
         return "${timestamp}_$uniqueId"
     }
 
+
+    fun getDecks(): Deferred<List<Deck>> {
+        val decksDeferred = CompletableDeferred<List<Deck>>()
+        try {
+            databaseInstance.collection("baralhos")
+                .get()
+                .addOnSuccessListener { result ->
+                    val decks = mutableListOf<Deck>()
+                    for(document in result)
+                        decks.add(Deck(document.id))
+                    decksDeferred.complete(decks)
+                }
+                .addOnFailureListener { e ->
+                    throw e
+                }
+        } catch (e : Exception) {
+            Log.w("DATABASE", "Erro a ler documentos dos baralhos: $e")
+        }
+        return decksDeferred
+    }
 }

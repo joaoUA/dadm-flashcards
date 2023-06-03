@@ -24,7 +24,6 @@ class InspectDeckActivity : AppCompatActivity() {
     private lateinit var deckName: String
 
     private lateinit var cards: MutableList<Card>
-    private lateinit var pickImageLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
