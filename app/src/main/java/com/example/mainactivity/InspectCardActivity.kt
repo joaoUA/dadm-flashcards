@@ -2,25 +2,21 @@ package com.example.mainactivity
 
 import android.content.ContentResolver
 import android.content.ContentValues
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 
 class InspectCardActivity : AppCompatActivity() {
 
@@ -29,15 +25,17 @@ class InspectCardActivity : AppCompatActivity() {
 
     private lateinit var cancelBtn: Button
     private lateinit var confirmBtn: Button
+
     private lateinit var addImageBtn: ImageButton
     private lateinit var addCameraBtn: ImageButton
+    private lateinit var removeImageBtn: ImageButton
+
     private lateinit var cardFrontText: EditText
     private lateinit var cardBackText: EditText
     private lateinit var cardImage: ImageView
     private lateinit var inspectCardLayout: LinearLayout
 
-    private val PERMISSION_REQUEST_CAMERA = 1
-
+    private val REQUEST_IMAGE_CAPTURE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +43,7 @@ class InspectCardActivity : AppCompatActivity() {
 
         addImageBtn = findViewById(R.id.btn_inspectCardAddImage)
         addCameraBtn = findViewById(R.id.btn_inspectCardCamera)
+        removeImageBtn = findViewById(R.id.btn_inspectCardRemoveImage)
         cancelBtn = findViewById(R.id.btn_InspectCardCancel)
         confirmBtn = findViewById(R.id.btn_InspectConfirm)
         cardFrontText = findViewById(R.id.et_inspectCardFrontText)
@@ -55,23 +54,9 @@ class InspectCardActivity : AppCompatActivity() {
         inspectCardLayout.visibility = View.GONE
 
         val cardID = intent.getStringExtra("CARD_ID")
-        if (cardID == null || cardID.isEmpty())
+        if (cardID == null || cardID.isEmpty()) {
             finish()
-
-        val pickImageFromGalleryContract = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let {
-                cardImage.setImageURI(uri)
-            }
         }
-        val takePictureContract =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    val imageUri: Uri? = result.data?.data
-                    imageUri?.let {
-                        cardImage.setImageURI(imageUri)
-                    }
-                }
-            }
 
         db = DatabaseManager.getDatabase()
         try {
@@ -79,63 +64,76 @@ class InspectCardActivity : AppCompatActivity() {
                 .document(cardID!!)
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
-                    if(!documentSnapshot.exists())
+                    if(!documentSnapshot.exists()) {
                         throw Exception("Document does not exist: $documentSnapshot")
+                    }
                     val data = documentSnapshot.data ?: throw Exception("Couldn't load data from document")
-                    val cardDataID = documentSnapshot.id
-                    val cardFront = data["frente"] as String
-                    val cardBack = data["verso"] as String
-                    val cardStudied = data["estudada"] as Boolean
+                    val cardDataId = documentSnapshot.id
+                    val cardDataFront = data["frente"] as String
+                    val cardDataBack = data["verso"] as String
+                    val cardDataStudied = data["estudada"] as Boolean
                     val cardDataImage = data["imagem"] as String
-                    card = Card(cardDataID, cardFront, cardBack, cardStudied, cardDataImage)
-
+                    card = Card(
+                        id=cardDataId,
+                        frente=cardDataFront,
+                        verso=cardDataBack,
+                        estudada=cardDataStudied,
+                        imagem=cardDataImage
+                    )
                     runOnUiThread {
-                        Glide.with(this)
-                            .load(cardDataImage)
-                            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
-                            .into(cardImage)
+                        if (cardDataImage.isNotEmpty()) {
+                            Glide.with(this)
+                                .load(cardDataImage)
+                                .into(cardImage)
+                           }
                         cardFrontText.setText(card.frente)
                         cardBackText.setText(card.verso)
                         inspectCardLayout.visibility = View.VISIBLE
                     }
                 }
                 .addOnFailureListener {
-                    throw Exception("Couldn't get card document")
+                    throw it
                 }
         } catch (e: Exception) {
-            Log.d("Card", "$e")
+            Log.d("CARD", "$e")
+            finish()
         }
 
-        addImageBtn.setOnClickListener {
-            pickImageFromGalleryContract.launch("image/*")
-        }
-        addCameraBtn.setOnClickListener {
-            val permissions = arrayOf(android.Manifest.permission.CAMERA)
-            if (checkPermissions(permissions)) {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                takePictureContract.launch(intent)
-            } else {
-                ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CAMERA)
+        val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if(uri != null) {
+                cardImage.setImageURI(uri)
             }
         }
+        addImageBtn.setOnClickListener {
+            galleryLauncher.launch("image/*")
+        }
+
+        removeImageBtn.setOnClickListener {
+            cardImage.setImageResource(R.drawable.ic_launcher_background)
+        }
+
+        addCameraBtn.setOnClickListener {
+
+        }
+
         cancelBtn.setOnClickListener {
             finish()
         }
+
+        //todo: confirmar com imagem vazia
         confirmBtn.setOnClickListener {
-            if(cardID == null)
-                return@setOnClickListener
             if(card.frente.isEmpty() || card.verso.isEmpty()) {
                 Toast.makeText(this, "Can't have empty fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            var imageIdentifier = ""
 
-            //Get Image from ImageView
-            val bitmap: Bitmap? = (cardImage.drawable as? BitmapDrawable)?.bitmap
-            val imageUri: Uri? = bitmap?.let { bitmap ->
+            var imageIdentifier = ""
+            //GET IMAGE FROM IMAGEVIEW
+            val imageBitmap: Bitmap? = (cardImage.drawable as? BitmapDrawable)?.bitmap
+            val imageUri: Uri = imageBitmap?.let { bitmap ->
                 val context = this.applicationContext
                 val contentResolver: ContentResolver = context.contentResolver
-                val imageName = "Image_${System.currentTimeMillis()}.jpg"
+                val imageName = "Image_${System.currentTimeMillis()}.jpeg"
                 val values = ContentValues().apply {
                     put(MediaStore.Images.Media.DISPLAY_NAME, imageName)
                     put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
@@ -148,55 +146,50 @@ class InspectCardActivity : AppCompatActivity() {
                     outputStream?.close()
                 }
                 imageUri
-            }
+            } ?: return@setOnClickListener
 
+            //UPLOAD IMAGE TO FIREBASE
+            val imageName = DatabaseManager.generateUniqueName()
+            val imageRef = FirebaseStorage.getInstance().getReference("imagens/$imageName")
+            imageRef.putFile(imageUri)
+                .addOnSuccessListener {
+                    Log.d("IMAGEM", "REF: $imageName")
+                    val uriTask = it.storage.downloadUrl
+                    while( !uriTask.isSuccessful);
+                    imageIdentifier = uriTask.result.toString()
+                    Toast.makeText(this, "Image uploaded with success", Toast.LENGTH_SHORT).show()
 
-            //Upload to Firebase Storage
-            if (imageUri != null) {
-                val imageName = DatabaseManager.generateUniqueName()
-                val imageRef = FirebaseStorage.getInstance().getReference("imagens/$imageName")
-                imageRef.putFile(imageUri)
-                    .addOnSuccessListener {
-                        Log.d("IMAGEM", "REF: $imageName")
+                    //UPDATE CARD ON FIREBASE
+                    card.frente = cardFrontText.text.toString().trim()
+                    card.verso = cardBackText.text.toString().trim()
+                    card.imagem = imageIdentifier
 
-                        val uriTask = it.storage.downloadUrl
-                        while (!uriTask.isSuccessful);
-                        imageIdentifier = uriTask.result.toString()
-                        Toast.makeText(this, "Image apparently uploaded with success", Toast.LENGTH_SHORT).show()
-                        card.frente = cardFrontText.text.toString().trim()
-                        card.verso = cardBackText.text.toString().trim()
-                        card.imagem = imageIdentifier
-
-                        val newCardData = hashMapOf(
-                            "frente" to card.frente,
-                            "verso" to card.verso,
-                            "imagem" to card.imagem,
-                            "estudada" to card.estudada
-                        )
-                        Log.d("IMAGEM", "Id: $imageIdentifier")
-                        Log.d("IMAGEM", "Card: ${card.imagem}")
-                        Log.d("IMAGEM", "Data: ${newCardData["imagem"]}")
-                        try {
-                            db.collection("cartas")
-                                .document(cardID)
-                                .set(newCardData)
-                                .addOnSuccessListener {
-                                    Log.d("Card", "DocumentSnapshot successfully written!")
-                                    finish()
-                                }
-                                .addOnFailureListener { e ->
-                                    Log.w("Card", "Error writing document", e)
-                                }
-                        } catch (e: Exception) {
-                            Log.d("Card", "$e")
-                        }
+                    val updatedCard = hashMapOf(
+                        "frente" to card.frente,
+                        "verso" to card.verso,
+                        "imagem" to card.imagem,
+                        "estudada" to card.estudada
+                    )
+                    try {
+                        db.collection("cartas")
+                            .document(cardID!!)
+                            .set(updatedCard)
+                            .addOnSuccessListener {
+                                Log.d("CARD", "Documento no Firebase atualizado!")
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                Log.d("CARD", "Documento no Firebase NÃO atualizado com sucesso")
+                            }
+                    } catch (e: Exception) {
+                        Log.d("Card", "$e")
                     }
-                    .addOnFailureListener {
-                        Log.w("Storage", "Failed Upload: $it")
-                        Toast.makeText(this, "Image couldn't be uploaded", Toast.LENGTH_SHORT).show()
-                    }
-            }
 
+                }
+                .addOnFailureListener {
+                    Log.w("STORAGE", "Failed Upload: $it")
+                    Toast.makeText(this, "Image couldn't be uploaded", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
@@ -207,5 +200,22 @@ class InspectCardActivity : AppCompatActivity() {
             }
         }
         return true
+    }
+    private fun getImageUri(bitmap: Bitmap): Uri {
+        val imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        val imageDetails = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "Title")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        }
+
+        val contentResolver = applicationContext.contentResolver
+        val uri = contentResolver.insert(imageCollection, imageDetails)
+
+        uri?.let { imageUri ->
+            contentResolver.openOutputStream(imageUri)?.use { outputStream ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            }
+        }
+        return uri ?: Uri.EMPTY
     }
 }
