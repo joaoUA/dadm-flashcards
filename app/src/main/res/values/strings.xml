@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Flashcards</string>
-    <string name="editDeck">Edit</string>
-    <string name="studyDeck">Study</string>
+    <string name="editDeckItem">Edit</string>
+    <string name="studyDeckItem">Study</string>
     <string name="deleteDeck">Delete</string>
     <string name="addCardToDeck">Add</string>
     <string name="itemCardDefaultText">Card Text Template</string>
@@ -24,4 +24,5 @@
     <string name="decksListTitle">Baralhos:</string>
     <string name="BtnAddDeck">Add</string>
     <string name="hintAddNewDeck">Nome do Baralho</string>
+    <string name="deleteDeckItem">Delete Deck</string>
 </resources>

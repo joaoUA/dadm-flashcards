@@ -1,13 +1,20 @@
 package com.example.mainactivity
 
 import android.content.Intent
+import android.util.Log
+import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DeckAdapter (private var decks: List<Deck>) :
     RecyclerView.Adapter<DeckAdapter.DeckViewHolder>() {
@@ -20,8 +27,9 @@ class DeckAdapter (private var decks: List<Deck>) :
     class DeckViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemDeckName: TextView = itemView.findViewById(R.id.tv_ItemDeckName)
         val itemDeckBtnsLayout: LinearLayout = itemView.findViewById(R.id.ll_ItemDeckActions)
-        val itemDeckEditBtn: Button = itemView.findViewById(R.id.btn_EditItemDeck)
-        val itemDeckStudyBtn: Button = itemView.findViewById(R.id.btn_StudyItemDeck)
+        val itemDeckEditBtn: ImageButton = itemView.findViewById(R.id.btn_EditItemDeck)
+        val itemDeckStudyBtn: ImageButton = itemView.findViewById(R.id.btn_StudyItemDeck)
+        val itemDeckDeleteBtn: ImageButton = itemView.findViewById(R.id.btn_DeleteItemDeck)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeckViewHolder {
@@ -52,6 +60,28 @@ class DeckAdapter (private var decks: List<Deck>) :
             val intent = Intent(holder.itemView.context, StudyDeckActivity::class.java)
             intent.putExtra("DECK_NAME", deck.name)
             holder.itemView.context.startActivity(intent)
+        }
+
+        holder.itemDeckDeleteBtn.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                DatabaseManager.getDatabase()
+                    .collection("baralhos")
+                    .document(deck.name)
+                    .delete()
+                    .addOnSuccessListener {
+                        Log.d("DATABASE", "Baralho eliminado com sucesso!")
+
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val decks = DatabaseManager.getDecks().await()
+                            withContext(Dispatchers.Main) {
+                                setDecks(decks)
+                            }
+                        }
+                    }
+                    .addOnFailureListener {
+                        Log.w("DATABASE", "Erro ao eliminar o baralho: $it")
+                    }
+            }
         }
     }
 

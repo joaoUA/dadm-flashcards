@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginVertical="5dp"
-    android:paddingHorizontal="10dp">
+    >
 
     <TextView
         android:id="@+id/tv_ItemDeckName"
@@ -22,26 +22,34 @@
         android:id="@+id/ll_ItemDeckActions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="60dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_ItemDeckName"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"
         android:background="@color/black"
-        android:visibility="gone"
+        android:visibility="visible"
+        android:paddingVertical="2dp"
         >
-        <Button
+        <ImageButton
+            android:id="@+id/btn_DeleteItemDeck"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_material_delete"
+            android:contentDescription="@string/deleteDeckItem" />
+        <ImageButton
             android:id="@+id/btn_EditItemDeck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/editDeck"
-            android:layout_marginHorizontal="5dp"/>
-        <Button
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_material_edit"
+            android:contentDescription="@string/editDeckItem" />
+        <ImageButton
             android:id="@+id/btn_StudyItemDeck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/studyDeck"
-            android:layout_marginHorizontal="5dp"/>
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_material_play"
+            android:contentDescription="@string/studyDeckItem"/>
 
     </LinearLayout>
 
