@@ -1,6 +1,7 @@
 package com.example.mainactivity
 
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -17,7 +18,6 @@ object DatabaseManager {
     fun getDatabase(): FirebaseFirestore {
         return databaseInstance
     }
-
 
     suspend fun getCardsFromDeckID(deckName: String): MutableList<Card> {
         val cards: MutableList<Card> = mutableListOf()
@@ -56,7 +56,7 @@ object DatabaseManager {
         }
         return cards
     }
-
+    
     fun generateUniqueName(): String {
         val timestamp = System.currentTimeMillis()
         val uniqueId = UUID.randomUUID().toString()
