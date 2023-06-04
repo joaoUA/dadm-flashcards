@@ -1,20 +1,36 @@
 package com.example.mainactivity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+/*todo: FAZER ATIVIDADE FLASHCARDS
+    - obter cartas do baralho selecionado
+    - ordenar cartas (aleatoriamente)
+    - limitar cartas (entre 5 a 10)
+    - guardar indice das cartas a que respondeu errado
+    - no fim da lista voltar às cartas erradas
+    - no fim de tudo, mostrar ecrã final com estatísticas das cartas (%certas etc)
+    - atualizar no firebase
+    - acabar atividade
+ */
+
+//TODO: CACHE DAS CARTAS E BARALHOS?
+/*TODO: MUDAR ESTRUTURA DA BASE DE DADOS: DOCUMENTO BARALHO CONTEM LISTA DE CARTAS, CADA ENTRADA
+    É UM HASHMAP COM OS CAMPOS NECESSÁRIOS
+    EVITAR TER QUE SINCRONIZAR ENTRE DUAS COLEÇÕES DISTINTAS.
+*/
+//TODO: REVER CÓDIGO, ESPECIALMENTE O QUE INTERAGE COM BASE DE DADOS, E TENTAR ISOLA-LO DENTRO DE 'DATABASE MANAGER'
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,11 +53,10 @@ class MainActivity : AppCompatActivity() {
         deckAdapter = DeckAdapter(emptyList())
         rvDecks.adapter = deckAdapter
 
-        val db = DatabaseManager.getDatabase()
-
+        //OBTER LISTA DE BARALHOS
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val decks = DatabaseManager.getDecks().await()
+                val decks = DatabaseManager.getDecks()
                 withContext(Dispatchers.Main) {
                     deckAdapter.setDecks(decks)
                 }
@@ -50,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        //CRIAR BARALHO COM O NOME INTRODUZIDO
         btnAddDeck.setOnClickListener {
             val newDeckName = deckNameText.text.toString().trim()
             if (newDeckName.isEmpty())
@@ -57,30 +73,19 @@ class MainActivity : AppCompatActivity() {
 
             deckNameText.setText("")
 
-            db.collection("baralhos")
-                .document(newDeckName)
-                .set(hashMapOf(
-                    "cartas" to arrayListOf<DocumentReference>()
-                ))
-                .addOnSuccessListener {
-                    Log.d("DATABASE", "Baralho $newDeckName: adicionado com sucesso")
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    DatabaseManager.addNewDeck(newDeckName)
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        try {
-                            val updatedDecks = DatabaseManager.getDecks().await()
-                            withContext(Dispatchers.Main) {
-                                deckAdapter.setDecks(updatedDecks)
-                            }
-
-                        } catch (e: Exception) {
-                            Log.w("DATABASE", "Erro a tentar ler baralhos do Firebase: $e")
-                        }
-
+                    val decks = DatabaseManager.getDecks()
+                    withContext(Dispatchers.Main) {
+                        deckAdapter.setDecks(decks)
                     }
+                } catch (e: Exception) {
+                    Log.w("DATABASE", "Erro ao tentar adicionar novo baralho: $e")
+                    Toast.makeText(this@MainActivity, "Erro a adicionar baralho!", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener {
-                    Log.d("DATABASE", "Baralho $newDeckName: erro ao adicionar: $it")
-                }
+            }
         }
     }
 }

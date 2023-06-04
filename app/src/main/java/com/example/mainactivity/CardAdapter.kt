@@ -1,18 +1,25 @@
 package com.example.mainactivity
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.NonDisposableHandle.parent
+import kotlinx.coroutines.*
 
 class CardAdapter(private var cards: List<Card>):
     RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
 
-    fun setCards(cards: List<Card>) {
+    private lateinit var deckName: String
+
+    fun setDeck(deckName: String) {
+        this.deckName = deckName
+    }
+
+    private fun setCards(cards: List<Card>) {
         this.cards = cards
         notifyDataSetChanged()
     }
@@ -40,11 +47,32 @@ class CardAdapter(private var cards: List<Card>):
         holder.itemCardEditBtn.setOnClickListener {
             val intent = Intent(holder.itemView.context, InspectCardActivity::class.java)
             intent.putExtra("CARD_ID", card.id)
+            intent.putExtra("DECK_NAME", deckName)
             holder.itemView.context.startActivity(intent)
         }
 
         holder.itemCardRemoveBtn.setOnClickListener {
-            //remover carta
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    if (card.imagemLink.isNotEmpty())
+                        DatabaseManager.deleteImageFromStorage(card.imagemRef)
+                    DatabaseManager.removeCard(card.id, deckName)
+                    updateCardList()
+                } catch (e: Exception) {
+                    Log.w("DATABASE", "Erro a tentar remover carta ${card.id} de $deckName: $e")
+                }
+            }
+        }
+    }
+
+    suspend fun updateCardList() {
+        try {
+            val cards = DatabaseManager.getCards(deckName)
+            withContext(Dispatchers.Main) {
+                setCards(cards)
+            }
+        } catch (e: Exception) {
+            Log.w("DATABASE", "Erro a tentar ler conteúdo do baralho $deckName: $e")
         }
     }
 }

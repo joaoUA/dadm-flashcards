@@ -1,9 +1,10 @@
 package com.example.mainactivity
 
 data class Card(
-    var id: String,
+    var id: Int,
     var frente: String,
     var verso: String,
     var estudada: Boolean,
-    var imagem: String
+    var imagemLink: String,
+    var imagemRef: String
 )

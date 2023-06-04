@@ -36,6 +36,7 @@ class StudyDeckActivity : AppCompatActivity() {
 
         deckName = intent.getStringExtra("DECK_NAME").toString()
 
+        /*
         db = DatabaseManager.getDatabase()
         cards = mutableListOf()
 
@@ -116,7 +117,7 @@ class StudyDeckActivity : AppCompatActivity() {
                 toggleAnswerButtons(false)
                 updateFlashcardText(cards[cardIndex].frente)
             }
-        }
+        }*/
     }
 
     private fun toggleAnswerButtons(show: Boolean) {

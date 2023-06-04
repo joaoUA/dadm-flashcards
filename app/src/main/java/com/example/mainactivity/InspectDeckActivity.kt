@@ -39,6 +39,7 @@ class InspectDeckActivity : AppCompatActivity() {
         rvCards.layoutManager = LinearLayoutManager(this)
 
         cardAdapter = CardAdapter(emptyList())
+        cardAdapter.setDeck(deckName)
         rvCards.adapter = cardAdapter
 
         addCardBtn.setOnClickListener {
@@ -51,12 +52,7 @@ class InspectDeckActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         CoroutineScope(Dispatchers.IO).launch {
-            cards = withContext(Dispatchers.Default) {
-                DatabaseManager.getCardsFromDeckID(deckName)
-            }
-            runOnUiThread {
-                cardAdapter.setCards(cards)
-            }
+            cardAdapter.updateCardList()
         }
     }
 }

@@ -48,7 +48,7 @@
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/inspectCardImageContentDescription"
-            android:src="@drawable/ic_launcher_background"/>
+            android:background="#999999"/>
         <LinearLayout
             android:layout_width="200dp"
             android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.example.mainactivity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
 import android.view.Display
@@ -19,6 +20,7 @@ import kotlinx.coroutines.withContext
 class DeckAdapter (private var decks: List<Deck>) :
     RecyclerView.Adapter<DeckAdapter.DeckViewHolder>() {
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setDecks(decks: List<Deck>) {
         this.decks = decks
         notifyDataSetChanged()
@@ -43,6 +45,7 @@ class DeckAdapter (private var decks: List<Deck>) :
 
         holder.itemDeckName.text = deck.name
 
+        //TOGGLE VISIBILIDADE DAS OPÇÕES DE CADA ITEM_BARALHO
         holder.itemDeckName.setOnClickListener {
             if (holder.itemDeckBtnsLayout.visibility == View.GONE)
                 holder.itemDeckBtnsLayout.visibility = View.VISIBLE
@@ -50,20 +53,25 @@ class DeckAdapter (private var decks: List<Deck>) :
                 holder.itemDeckBtnsLayout.visibility = View.GONE
         }
 
+        //INICIAR ATIVIDADE DE EDITAR BARALHO
         holder.itemDeckEditBtn.setOnClickListener {
             val intent = Intent(holder.itemView.context, InspectDeckActivity::class.java)
+            Log.d("DATABASE", "NOME DO BARALHO: ${deck.name}")
             intent.putExtra("DECK_NAME", deck.name)
             holder.itemView.context.startActivity(intent)
         }
 
+        //INICIAR ATIVIDADE DE ESTUDAR BARALHO
         holder.itemDeckStudyBtn.setOnClickListener {
             val intent = Intent(holder.itemView.context, StudyDeckActivity::class.java)
             intent.putExtra("DECK_NAME", deck.name)
             holder.itemView.context.startActivity(intent)
         }
 
+        //APAGAR BARALHO
         holder.itemDeckDeleteBtn.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
+                //todo: mover para o manager
                 DatabaseManager.getDatabase()
                     .collection("baralhos")
                     .document(deck.name)
@@ -72,7 +80,7 @@ class DeckAdapter (private var decks: List<Deck>) :
                         Log.d("DATABASE", "Baralho eliminado com sucesso!")
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            val decks = DatabaseManager.getDecks().await()
+                            val decks = DatabaseManager.getDecks()
                             withContext(Dispatchers.Main) {
                                 setDecks(decks)
                             }

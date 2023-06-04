@@ -25,4 +25,5 @@
     <string name="BtnAddDeck">Add</string>
     <string name="hintAddNewDeck">Nome do Baralho</string>
     <string name="deleteDeckItem">Delete Deck</string>
+    <string name="AvisoCamposVazios">Preencha os campos</string>
 </resources>
