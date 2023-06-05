@@ -26,4 +26,7 @@
     <string name="hintAddNewDeck">Nome do Baralho</string>
     <string name="deleteDeckItem">Delete Deck</string>
     <string name="AvisoCamposVazios">Preencha os campos</string>
+    <string name="btnInspectCardRemoveImage">Remove Image</string>
+    <string name="btnInspectCardAddPhoto">Add Photo</string>
+    <string name="btnInspectCardAddGalleryImage">Add Image From Gallery</string>
 </resources>

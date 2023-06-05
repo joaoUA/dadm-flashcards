@@ -26,8 +26,8 @@ class InspectCardActivity : AppCompatActivity() {
     private var changedImage: Boolean = false
     private lateinit var card: Card
 
-    private lateinit var btnCancel: Button
-    private lateinit var btnConfirm: Button
+    private lateinit var btnCancel: ImageButton
+    private lateinit var btnConfirm: ImageButton
 
     private lateinit var btnAddGalleryImage: ImageButton
     private lateinit var btnAddCameraImage: ImageButton
@@ -43,7 +43,7 @@ class InspectCardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_inspect_card)
 
         btnAddGalleryImage = findViewById(R.id.btn_inspectCardAddImage)
-        btnAddCameraImage = findViewById(R.id.btn_inspectCardCamera)
+        //btnAddCameraImage = findViewById(R.id.btn_inspectCardCamera)
         btnRemoveImage = findViewById(R.id.btn_inspectCardRemoveImage)
         btnCancel = findViewById(R.id.btn_InspectCardCancel)
         btnConfirm = findViewById(R.id.btn_InspectConfirm)
@@ -96,8 +96,8 @@ class InspectCardActivity : AppCompatActivity() {
             changedImage = true
         }
 
-        btnAddCameraImage.setOnClickListener {
-        }
+        /*btnAddCameraImage.setOnClickListener {
+        }*/
 
         btnCancel.setOnClickListener {
             finish()

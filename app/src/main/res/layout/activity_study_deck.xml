@@ -56,7 +56,8 @@
                 android:layout_height="50dp"
                 android:contentDescription="@string/flashcardWrongBtnText"
                 android:src="@drawable/ic_material_close"
-                />
+                android:background="@color/red"
+                app:tint="@color/white" />
             <ImageButton
                 android:id="@+id/btn_flashcardFlipBtn"
                 android:layout_weight="1"
@@ -64,7 +65,8 @@
                 android:layout_height="50dp"
                 android:contentDescription="@string/flashcardFlipBtnText"
                 android:src="@drawable/ic_material_flip"
-                />
+                android:background="@color/main_blue"
+                app:tint="@color/white" />
             <ImageButton
                 android:id="@+id/btn_flashcardCorrectBtn"
                 android:layout_weight="1"
@@ -72,7 +74,8 @@
                 android:layout_height="50dp"
                 android:contentDescription="@string/flashcardCorrectBtnText"
                 android:src="@drawable/ic_material_check"
-                />
+                android:background="@color/green"
+                app:tint="@color/white" />
             <ImageButton
                 android:id="@+id/btn_flashcardEndBtn"
                 android:layout_weight="1"
@@ -80,6 +83,8 @@
                 android:layout_height="50dp"
                 android:contentDescription="@string/flashcardCorrectBtnText"
                 android:src="@drawable/ic_material_check"
+                android:background="@color/main_blue"
+                app:tint="@color/white" />
                 />
         </LinearLayout>
 

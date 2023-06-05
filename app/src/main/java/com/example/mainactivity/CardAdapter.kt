@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
@@ -26,8 +27,8 @@ class CardAdapter(private var cards: List<Card>):
 
     class CardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val itemCardName: TextView = itemView.findViewById(R.id.tv_ItemCardName)
-        val itemCardEditBtn: Button = itemView.findViewById(R.id.btn_EditItemCard)
-        val itemCardRemoveBtn: Button = itemView.findViewById(R.id.btn_RemoveItemCard)
+        val itemCardEditBtn: ImageButton = itemView.findViewById(R.id.btn_EditItemCard)
+        val itemCardRemoveBtn: ImageButton = itemView.findViewById(R.id.btn_RemoveItemCard)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {

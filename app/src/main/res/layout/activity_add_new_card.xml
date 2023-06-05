@@ -28,20 +28,27 @@
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             >
-            <Button
+            <ImageButton
                 android:id="@+id/btn_AddNewCardCancel"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
-                android:text="@string/cancelInspectCardBtn"/>
-            <Button
+                android:contentDescription="@string/cancelInspectCardBtn"
+                android:src="@drawable/ic_material_close"
+                android:background="@color/grey"
+                app:tint="@color/white"
+                />
+            <ImageButton
                 android:id="@+id/btn_AddNewCardConfirm"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
-                android:text="@string/confirmInspectCardBtn"/>
+                android:contentDescription="@string/confirmInspectCardBtn"
+                android:src="@drawable/ic_material_check"
+                android:background="@color/green"
+                app:tint="@color/white" />
         </LinearLayout>
     </LinearLayout>
 

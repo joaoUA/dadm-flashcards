@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:padding="10dp"
+        android:background="@color/dark_blue"
         >
         <TextView
             android:id="@+id/tv_ItemCardName"
@@ -16,24 +18,31 @@
             android:layout_weight="1"
             android:text="@string/itemCardDefaultText"
             android:textStyle="bold"
+            android:textColor="@color/white"
+            android:paddingHorizontal="10dp"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:maxLines="1"
             android:ellipsize="end"
             />
-        <Button
+        <ImageButton
             android:id="@+id/btn_EditItemCard"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="@string/editItemCard"
             android:layout_marginHorizontal="5dp"
-            android:text="@string/editItemCard"
-            />
-        <Button
+            android:src="@drawable/ic_material_edit"
+            android:background="@color/main_blue"
+            app:tint="@color/white" />
+        <ImageButton
             android:id="@+id/btn_RemoveItemCard"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:text="@string/removeItemCard"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="@string/removeItemCard"
             android:layout_marginHorizontal="5dp"
+            android:src="@drawable/ic_material_delete"
+            android:background="@color/red"
+            app:tint="@color/white"
             />
 
     </LinearLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,19 +15,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/*todo: FAZER ATIVIDADE FLASHCARDS
-    - obter cartas do baralho selecionado
-    - ordenar cartas (aleatoriamente)
-    - limitar cartas (entre 5 a 10)
-    - guardar indice das cartas a que respondeu errado
-    - no fim da lista voltar às cartas erradas
-    - no fim de tudo, mostrar ecrã final com estatísticas das cartas (%certas etc)
-    - atualizar no firebase
-    - acabar atividade
- */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var btnAddDeck: Button
+    private lateinit var btnAddDeck: ImageButton
     private lateinit var deckNameText: EditText
 
     private lateinit var rvDecks: RecyclerView

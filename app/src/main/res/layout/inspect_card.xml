@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/inspectCardFrontLabel"
+            android:textStyle="bold"
             android:labelFor="@id/et_inspectCardFrontText"/>
 
         <EditText
@@ -31,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/inspectCardBackLabel"
+            android:textStyle="bold"
             android:labelFor="@+id/et_inspectCardBackText"/>
 
         <EditText
@@ -48,7 +50,7 @@
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/inspectCardImageContentDescription"
-            android:background="#999999"/>
+            android:background="@color/grey"/>
         <LinearLayout
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -62,36 +64,34 @@
                 android:id="@+id/btn_inspectCardRemoveImage"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_material_close"
-                android:contentDescription="Remove Image"
-
-                android:minWidth="200dp"
-                android:minHeight="40dp"
-                android:layout_marginHorizontal="5dp"
-                />
+                android:layout_height="60dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_material_delete"
+                android:contentDescription="@string/btnInspectCardRemoveImage"
+                android:background="@color/red"
+                app:tint="@color/white" />
+            <!--
             <ImageButton
                 android:id="@+id/btn_inspectCardCamera"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_material_add_photo"
-                android:contentDescription="Add Photo"
+                android:contentDescription="@string/btnInspectCardAddPhoto"
 
                 android:minHeight="40dp"
                 android:layout_marginHorizontal="5dp"
                 />
+                -->
             <ImageButton
                 android:id="@+id/btn_inspectCardAddImage"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:src="@drawable/ic_material_collections"
-                android:contentDescription="Add Image From Gallery"
-
-                android:minHeight="40dp"
-                android:layout_marginHorizontal="5dp"
-                />
+                android:contentDescription="@string/btnInspectCardAddGalleryImage"
+                android:background="@color/main_blue"
+                app:tint="@color/white" />
         </LinearLayout>
     </LinearLayout>
 

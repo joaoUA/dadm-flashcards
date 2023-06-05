@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,13 +18,11 @@ import kotlinx.coroutines.withContext
 
 class InspectDeckActivity : AppCompatActivity() {
 
-    private lateinit var addCardBtn: Button
+    private lateinit var addCardBtn: ImageButton
 
     private lateinit var rvCards: RecyclerView
     private lateinit var cardAdapter: CardAdapter
     private lateinit var deckName: String
-
-    private lateinit var cards: MutableList<Card>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

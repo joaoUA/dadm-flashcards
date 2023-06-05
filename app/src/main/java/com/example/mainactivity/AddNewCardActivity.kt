@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
 
 class AddNewCardActivity : AppCompatActivity() {
 
-    private lateinit var btnConfirmAddNewCard: Button
-    private lateinit var btnCancelAddNewCard: Button
+    private lateinit var btnConfirmAddNewCard: ImageButton
+    private lateinit var btnCancelAddNewCard: ImageButton
 
     private lateinit var btnAddGalleryImage: ImageButton
     private lateinit var btnAddCameraImage: ImageButton
@@ -34,7 +34,7 @@ class AddNewCardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_new_card)
 
         btnAddGalleryImage = findViewById(R.id.btn_inspectCardAddImage)
-        btnAddCameraImage = findViewById(R.id.btn_inspectCardCamera)
+        //btnAddCameraImage = findViewById(R.id.btn_inspectCardCamera)
         btnRemoveImage = findViewById(R.id.btn_inspectCardRemoveImage)
         btnConfirmAddNewCard = findViewById(R.id.btn_AddNewCardConfirm)
         btnCancelAddNewCard = findViewById(R.id.btn_AddNewCardCancel)
