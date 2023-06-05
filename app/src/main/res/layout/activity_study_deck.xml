@@ -29,9 +29,10 @@
                 android:id="@+id/iv_flashcardImage"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:src="@drawable/ic_launcher_background"
+                android:background="#999999"
                 android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/flashcardImageContentDescription" />
+                android:contentDescription="@string/flashcardImageContentDescription"
+                />
             <TextView
                 android:id="@+id/tv_flashcardText"
                 android:layout_width="wrap_content"
@@ -48,29 +49,37 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
         >
-            <Button
+            <ImageButton
                 android:id="@+id/btn_flashcardWrongBtn"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/flashcardWrongBtnText"
-                android:layout_marginHorizontal="5dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/flashcardWrongBtnText"
+                android:src="@drawable/ic_material_close"
                 />
-            <Button
+            <ImageButton
                 android:id="@+id/btn_flashcardFlipBtn"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/flashcardFlipBtnText"
-                android:layout_marginHorizontal="5dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/flashcardFlipBtnText"
+                android:src="@drawable/ic_material_flip"
                 />
-            <Button
+            <ImageButton
                 android:id="@+id/btn_flashcardCorrectBtn"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/flashcardCorrectBtnText"
-                android:layout_marginHorizontal="5dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/flashcardCorrectBtnText"
+                android:src="@drawable/ic_material_check"
+                />
+            <ImageButton
+                android:id="@+id/btn_flashcardEndBtn"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/flashcardCorrectBtnText"
+                android:src="@drawable/ic_material_check"
                 />
         </LinearLayout>
 

@@ -24,14 +24,6 @@ import kotlinx.coroutines.withContext
     - atualizar no firebase
     - acabar atividade
  */
-
-//TODO: CACHE DAS CARTAS E BARALHOS?
-/*TODO: MUDAR ESTRUTURA DA BASE DE DADOS: DOCUMENTO BARALHO CONTEM LISTA DE CARTAS, CADA ENTRADA
-    É UM HASHMAP COM OS CAMPOS NECESSÁRIOS
-    EVITAR TER QUE SINCRONIZAR ENTRE DUAS COLEÇÕES DISTINTAS.
-*/
-//TODO: REVER CÓDIGO, ESPECIALMENTE O QUE INTERAGE COM BASE DE DADOS, E TENTAR ISOLA-LO DENTRO DE 'DATABASE MANAGER'
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var btnAddDeck: Button
