@@ -2,6 +2,7 @@ package com.example.mainactivity
 
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -11,6 +12,8 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.storage.StorageException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +57,17 @@ class AddNewCardActivity : AppCompatActivity() {
             }
         }
         btnAddGalleryImage.setOnClickListener {
-            galleryLauncher.launch("image/*")
+            val galleryPermission = android.Manifest.permission.READ_EXTERNAL_STORAGE
+            val neededPermissions = arrayOf(galleryPermission)
+            val hasPermissions = checkPermissions(neededPermissions)
+            Log.d("PERMISSIONS", "$hasPermissions")
+            if(!hasPermissions) {
+                ActivityCompat.requestPermissions(this, neededPermissions,
+                    GALLERY_PERMISSION_REQUEST_CODE
+                )
+            } else {
+                galleryLauncher.launch("image/*")
+            }
         }
         btnRemoveImage.setOnClickListener {
             cardImage.setImageDrawable(null)
@@ -120,5 +133,18 @@ class AddNewCardActivity : AppCompatActivity() {
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
         outputStream?.close()
         return imageUri
+    }
+
+    private fun checkPermissions(permissions: Array<String>): Boolean {
+        for (permission in permissions) {
+            if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
+    }
+
+    companion object {
+        private const val GALLERY_PERMISSION_REQUEST_CODE = 100
     }
 }

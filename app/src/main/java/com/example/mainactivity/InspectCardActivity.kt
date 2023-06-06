@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.StorageException
@@ -88,7 +89,18 @@ class InspectCardActivity : AppCompatActivity() {
             }
         }
         btnAddGalleryImage.setOnClickListener {
-            galleryLauncher.launch("image/*")
+            val galleryPermission = android.Manifest.permission.READ_EXTERNAL_STORAGE
+            val neededPermissions = arrayOf(galleryPermission)
+
+            val hasPermissions = checkPermissions(neededPermissions)
+
+            Log.d("PERMISSIONS", "$hasPermissions")
+
+            if(!hasPermissions) {
+                ActivityCompat.requestPermissions(this, neededPermissions, GALLERY_PERMISSION_REQUEST_CODE)
+            } else {
+                galleryLauncher.launch("image/*")
+            }
         }
 
         btnRemoveImage.setOnClickListener {
@@ -189,5 +201,9 @@ class InspectCardActivity : AppCompatActivity() {
             }
         }
         return uri ?: Uri.EMPTY
+    }
+
+    companion object {
+        private const val GALLERY_PERMISSION_REQUEST_CODE = 100
     }
 }
